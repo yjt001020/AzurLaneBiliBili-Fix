@@ -1,3 +1,8 @@
+# 解决闪退问题
+根据[issue](https://github.com/CapitalGrin/AzurLaneBiliBili-Perseus/issues/6#issuecomment-2368122043)中的的方法
+通过替换[Perseus](https://github.com/Egoistically/Perseus)为通过[JMBQ修改的库](https://github.com/JMBQ/azurlane)解决模拟器闪退问题
+目前测试MUMU没有闪退问题
+
 # Perseus Build
 This repo template will allow you to build Perseus using Github Actions. This will helps people who don't want to setup build environments on their machines.
 
