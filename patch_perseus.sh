@@ -24,18 +24,18 @@ done
 chmod +x apkeep
 
 # Download Azur Lane
-if [ ! -f "com.bilibili.AzurLane.apk" ]; then
-    echo "Get Azur Lane apk"
+
+echo "Get Azur Lane apk"
 
     # eg: wget "your download link" -O "your packge name.apk" -q
     #if you want to patch .xapk, change the suffix here to wget "your download link" -O "your packge name.xapk" -q
-    wget https://pkg.biligame.com/games/blhx_9.5.11_0427_1_20250506_095207_d4e3f.apk -O com.bilibili.AzurLane.apk -q
-    echo "apk downloaded !"
+unzip com.bilibili.AzurLane.zip
+echo "apk downloaded !"
 
     # if you can only download .xapk file uncomment 2 lines below. (delete the '#')
     #unzip -o com.YoStarJP.AzurLane.xapk -d AzurLane
     #cp AzurLane/com.YoStarJP.AzurLane.apk .
-fi
+
 
 # Download JMBQ
 if [ ! -d "azurlane" ]; then
@@ -50,12 +50,12 @@ echo "Copy JMBQ libs"
 cp -r azurlane/. com.bilibili.AzurLane/lib/
 
 echo "Patching Azur Lane with JMBQ"
-oncreate=$(grep -n -m 1 'onCreate' com.bilibili.AzurLane/smali_classes2/com/unity3d/player/UnityPlayerActivity.smali | sed  's/[0-9]*\:\(.*\)/\1/')
-sed -ir "N; s#\($oncreate\n    .locals 2\)#\1\n    const-string v0, \"JMBQ\"\n\n    invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V\n#" com.bilibili.AzurLane/smali_classes2/com/unity3d/player/UnityPlayerActivity.smali
+oncreate=$(grep -n -m 1 'onCreate'  com.bilibili.AzurLane/smali_classes3/com/unity3d/player/UnityPlayerActivity.smali | sed  's/[0-9]*\:\(.*\)/\1/')
+sed -ir "N; s#\($oncreate\n    .locals 2\)#\1\n    const-string v0, \"JMBQ\"\n\n    invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V\n#" com.bilibili.AzurLane/smali_classes3/com/unity3d/player/UnityPlayerActivity.smali
 
 echo "Build Patched Azur Lane apk"
 java -jar apktool.jar -q -f b com.bilibili.AzurLane -o build/com.bilibili.AzurLane.patched.apk
 
 echo "Set Github Release version"
-s=($(./apkeep -a com.bilibili.AzurLane -l))
+s=($(./apkeep -a com.bilibili.AzurLane -l .))
 echo "PERSEUS_VERSION=$(echo ${s[-1]})" >> $GITHUB_ENV
