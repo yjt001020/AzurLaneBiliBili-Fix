@@ -29,7 +29,7 @@ echo "Get Azur Lane apk"
 
     # eg: wget "your download link" -O "your packge name.apk" -q
     #if you want to patch .xapk, change the suffix here to wget "your download link" -O "your packge name.xapk" -q
-unzip com.bilibili.AzurLane.zip
+7z x com.bilibili.AzurLane.zip
 echo "apk downloaded !"
 
     # if you can only download .xapk file uncomment 2 lines below. (delete the '#')
