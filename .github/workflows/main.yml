@@ -25,8 +25,6 @@ jobs:
 
       - name: Build Perseus APK
         run: ./patch_perseus.sh
-      - name: List build directory
-        run: ls -l build/
 
       - name: Zipalign and Sign Android release
         run: ./zipalign_sign.sh
