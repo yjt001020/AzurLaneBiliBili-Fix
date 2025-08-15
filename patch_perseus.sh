@@ -24,9 +24,9 @@ done
 chmod +x apkeep
 
 # Download Azur Lane
+
 echo "Get Azur Lane apk"
 
-wget "https://pkg.biligame.com/games/blhx_9.5.11_0427_1_20250506_095207_d4e3f.apk" -O "com.bilibili.AzurLane.zip" -q
     # eg: wget "your download link" -O "your packge name.apk" -q
     #if you want to patch .xapk, change the suffix here to wget "your download link" -O "your packge name.xapk" -q
 7z x com.bilibili.AzurLane.zip
@@ -34,7 +34,7 @@ echo "apk downloaded !"
 
     # if you can only download .xapk file uncomment 2 lines below. (delete the '#')
     #unzip -o com.YoStarJP.AzurLane.xapk -d AzurLane
-    #cp AzurLane/com.bilibili.AzurLane.zip .
+    #cp AzurLane/com.YoStarJP.AzurLane.apk .
 
 
 # Download JMBQ
@@ -44,7 +44,7 @@ if [ ! -d "azurlane" ]; then
 fi
 
 echo "Decompile Azur Lane apk"
-java -jar apktool.jar -q -f d com.bilibili.AzurLane.zip
+java -jar apktool.jar -q -f d com.bilibili.AzurLane.apk
 
 echo "Copy JMBQ libs"
 cp -r azurlane/. com.bilibili.AzurLane/lib/
@@ -59,7 +59,3 @@ java -jar apktool.jar -q -f b com.bilibili.AzurLane -o build/com.bilibili.AzurLa
 echo "Set Github Release version"
 s=($(./apkeep -a com.bilibili.AzurLane -l .))
 echo "PERSEUS_VERSION=$(echo ${s[-1]})" >> $GITHUB_ENV
-if [ ! -f build/com.bilibili.AzurLane.patched.apk ]; then
-  echo "APK build failed!"
-  exit 1
-fi
