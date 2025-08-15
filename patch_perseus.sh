@@ -59,3 +59,4 @@ java -jar apktool.jar -q -f b com.bilibili.AzurLane -o build/com.bilibili.AzurLa
 echo "Set Github Release version"
 s=($(./apkeep -a com.bilibili.AzurLane -l .))
 echo "PERSEUS_VERSION=$(echo ${s[-1]})" >> $GITHUB_ENV
+ls build/
