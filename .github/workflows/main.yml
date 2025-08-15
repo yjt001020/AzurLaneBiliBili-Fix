@@ -1,7 +1,6 @@
 name: Perseus Build
 
-on:
-  workflow_dispatch:
+on: [workflow_dispatch, push]
 
 jobs:
   build:
@@ -9,29 +8,43 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          # 确保包含分卷文件
+          lfs: true
+
+      - name: 安装必要工具
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y p7zip-full jq
 
       - name: Setup Java JDK
         uses: actions/setup-java@v3.3.0
         with:
           java-version: "17"
-          distribution: "adopt"
+          distribution: "temurin"  # 更稳定的发行版
 
-      - name: Set up Android SDK
+      - name: 设置Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          build-tools-version: 32.0.0
 
-      - name: Install build-tools
-        run: |
-          yes | sdkmanager --install "build-tools;32.0.0"
-
-      - name: Build Perseus APK
+      - name: 构建APK
         run: ./patch_perseus.sh
 
+      - name: 签名APK
+        run: |
+          # 使用专业签名工具
+          zipalign -pvf 4 build/com.bilibili.AzurLane.patched.unsigned.apk build/com.bilibili.AzurLane.patched.apk
+          apksigner sign \
+            --key testkey.pk8 \
+            --cert testkey.x509.pem \
+            build/com.bilibili.AzurLane.patched.apk
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "latest"
-          draft: true
+          draft: false
           title: "Perseus Release v${{ env.PERSEUS_VERSION }}"
           files: |
             build/*.apk
