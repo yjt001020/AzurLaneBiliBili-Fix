@@ -26,6 +26,10 @@ jobs:
       - name: Build Perseus APK
         run: ./patch_perseus.sh
 
+        
+      - name: Zipalign and Sign Android release
+        run: ./zipalign_sign.sh
+
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
